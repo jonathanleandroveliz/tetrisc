@@ -1,8 +1,16 @@
 # depslib dependency file v1.0
-1673568429 source:c:\users\toto\desktop\programasc++\tetris\main.cpp
+1673570416 source:c:\users\toto\desktop\programasc++\tetris\main.cpp
 	<iostream>
 	<allegro.h>
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
+	"tetris_allegro.h"
+
+1673569394 source:c:\users\toto\desktop\programasc++\tetris\tetris_allegro.cpp
+	"tetris_allegro.h"
+	<allegro.h>
+
+1673569487 c:\users\toto\desktop\programasc++\tetris\tetris_allegro.h
+	<allegro.h>
 
