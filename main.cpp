@@ -20,12 +20,13 @@ int main()
     BITMAP *muroH = load_bitmap("Imagenes/muro_horizontal.bmp",NULL);
     BITMAP *muroV = load_bitmap("Imagenes/muro_vertical.bmp", NULL);
     BITMAP *img_b = load_bitmap("Imagenes/piezas.bmp", NULL);
+    BITMAP *elimn = load_bitmap("Imagenes/elimina_piezas.bmp", NULL);
 
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
     int aux =0;
     int pb = 0;
-    int aleatorio;
+    int aleatorio , fila , cfila, fin;
 
     // Booleanos para detectar las colisiones
     bool colb = false;
@@ -51,11 +52,14 @@ int main()
     else if(aleatorio == 5) pAc.setBls(bl5), pAc.setColor(ROJO);
     else if(aleatorio == 6) pAc.setBls(bl6), pAc.setColor(AZUL);
 
+
     //Mostrar pieza
     //Pieza pAc(b_prin,bl1, VERDE);
 
     limpiar_mapa();
     while (!key[KEY_ESC]){
+
+
 
         clear_to_color(buffer, 0x000000);
         mostrar_muros(buffer, muroH, muroV);
@@ -74,6 +78,32 @@ int main()
         // Cuando hace una colison abajo se genere otra pieza aleatoria
         if(colb){
             pAc.insertar_mapa();
+            fila = pAc.getY() + 2;
+            while(fila > 19)
+                fila--;
+            fin = fila - 4;
+            cfila = fila;
+            while(fila >= fin){
+              if(pAc.fila_llena(fila)){
+                for(int i=1; i<11; i++)
+                    blit(elimn,buffer,0,0,i*SBLOCK, fila*SBLOCK, 25, 25);
+                blit(buffer,screen,0,0,0,0,ANCHO,ALTO);
+                for(int i=1; i<11; i++){
+                    blit(elimn, buffer, 25, 0, i*SBLOCK, fila*SBLOCK,25,25);
+                    blit(buffer, screen, 0, 0, 0, 0, ANCHO, ALTO);
+                    blit(elimn, buffer, 50, 0, i*SBLOCK, fila*SBLOCK,25,25);
+                    rest(8);
+                }
+              }
+              fila--;
+            }
+            fila= cfila;
+            while( fila >= fin){
+                if(pAc.fila_llena(fila))
+                    eliminar_fila(fila);
+                else
+                    fila--;
+            }
             b_prin.x =5, b_prin.y = 2;
             pAc.setBPrin(b_prin);
             aleatorio = 1 + rand() % 6;
@@ -84,12 +114,24 @@ int main()
             else if(aleatorio == 5) pAc.setBls(bl5), pAc.setColor(ROJO);
             else if(aleatorio == 6) pAc.setBls(bl6), pAc.setColor(AZUL);
             colb = false;
+            rest(100);
         }
+
+        Pieza pAux = pAc;
           //Detectando el teclado
         if(key[KEY_RIGHT] && !cold)
             pAc.incrX(1);
         if(key[KEY_LEFT] && !coli)
             pAc.incrX(-1);
+        if(key[KEY_UP])
+            pAc.rotar();
+            pAc.incrX(1);
+            if(pAc.colision_izquierda())
+                pAc = pAux;
+            pAc.incrX(-2);
+            if(pAc.colision_derecha())
+                pAc = pAux;
+            pAc.incrX(1);
         if(key[KEY_DOWN])
             vcaida = 0;
 
@@ -107,7 +149,7 @@ int main()
         cold = false;
         coli = false;
 
-        rest(30);
+        rest(40);
     }
 
 

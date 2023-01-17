@@ -39,15 +39,20 @@ public:
         bool colision_abajo();
         bool colision_derecha();
         bool colision_izquierda();
+        bool fila_llena(int fila);
         void insertar_mapa();
+        int getY(){ return b_prin.y; }
+        int getX(){ return b_prin.x; }
         void setBPrin(Bloque newB_prin){ b_prin = newB_prin; }
         void setBls(Bloque newBls[3]){ for(int i=0; i<3; i++) bls[i] = newBls[i]; }
         void setColor(int newColor){ color_p = newColor ; }
+        void rotar();
 };
 
 void mostrar_muros(BITMAP *buffer, BITMAP *muroH, BITMAP *muroV);
 void limpiar_mapa();
 void mostrar_mapa(BITMAP *buffer, BITMAP *img_b);
+void eliminar_fila(int fila);
 
 
 #endif // TETRIS_ALLEGRO_H_INCLUDED
