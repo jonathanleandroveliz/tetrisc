@@ -50,6 +50,8 @@ public:
 };
 
 void mostrar_muros(BITMAP *buffer, BITMAP *muroH, BITMAP *muroV);
+void mostrar_numero(BITMAP *buffer, BITMAP *img_num, int numero, int xnum, int ynum);
+void mostrar_datos(BITMAP *buffer, BITMAP *img_texto, BITMAP *img_num, int puntos, int nivel);
 void limpiar_mapa();
 void mostrar_mapa(BITMAP *buffer, BITMAP *img_b);
 void eliminar_fila(int fila);

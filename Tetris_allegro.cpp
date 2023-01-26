@@ -149,6 +149,30 @@ void mostrar_mapa(BITMAP* buffer, BITMAP* img_b){
 
 }
 
+void mostrar_numero(BITMAP* buffer, BITMAP* img_num, int numero, int xnum, int ynum){
+    int uDigito, pos = 0;
+    if(numero !=0){
+    while(numero != 0){
+        uDigito = numero % 10;
+        blit(img_num, buffer, uDigito*30, 0, xnum-pos, ynum, 30,60);
+        numero = numero /= 10;
+        pos += 38;
+        }
+    }
+    else{
+        blit(img_num, buffer,0,0,xnum,ynum,30,60);
+    }
+}
+
+void mostrar_datos(BITMAP* buffer, BITMAP* img_texto, BITMAP* img_num, int puntos, int nivel){
+    blit(img_texto, buffer, 0, 0, 320, 50, 146, 34);
+    blit(img_texto, buffer, 0, 34, 320, 210, 119, 34);
+    mostrar_numero(buffer, img_num, puntos, 430, 260);
+    blit(img_texto, buffer, 0, 68, 320, 340, 82, 34);
+    mostrar_numero(buffer, img_num, nivel, 430, 390);
+
+}
+
 void eliminar_fila(int fila){
     for(int i=fila; i>0; i--)
         for(int j=1; j<11; j++)

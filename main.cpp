@@ -21,12 +21,15 @@ int main()
     BITMAP *muroV = load_bitmap("Imagenes/muro_vertical.bmp", NULL);
     BITMAP *img_b = load_bitmap("Imagenes/piezas.bmp", NULL);
     BITMAP *elimn = load_bitmap("Imagenes/elimina_piezas.bmp", NULL);
+    BITMAP *img_texto = load_bitmap("Imagenes/textos.bmp", NULL);
+    BITMAP *img_num = load_bitmap("Imagenes/numeros.bmp", NULL);
 
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
     int aux =0;
     int pb = 0;
     int aleatorio , fila , cfila, fin;
+    int puntos = 0, nivel = 0;
 
     // Booleanos para detectar las colisiones
     bool colb = false;
@@ -58,12 +61,11 @@ int main()
 
     limpiar_mapa();
     while (!key[KEY_ESC]){
-
-
-
         clear_to_color(buffer, 0x000000);
         mostrar_muros(buffer, muroH, muroV);
+        mostrar_datos(buffer, img_texto, img_num, puntos, nivel);
         mostrar_mapa(buffer,img_b);
+
 
         if(pAc.colision_abajo()) colb = true;
         if(pAc.colision_derecha()) cold = true;
@@ -83,7 +85,7 @@ int main()
                 fila--;
             fin = fila - 4;
             cfila = fila;
-            while(fila >= fin){
+            while(fila >= fin){ //while de la animacion
               if(pAc.fila_llena(fila)){
                 for(int i=1; i<11; i++)
                     blit(elimn,buffer,0,0,i*SBLOCK, fila*SBLOCK, 25, 25);
@@ -93,6 +95,10 @@ int main()
                     blit(buffer, screen, 0, 0, 0, 0, ANCHO, ALTO);
                     blit(elimn, buffer, 50, 0, i*SBLOCK, fila*SBLOCK,25,25);
                     rest(8);
+                }
+                puntos++;
+                if(puntos % 5 == 0){
+                    nivel++;
                 }
               }
               fila--;
