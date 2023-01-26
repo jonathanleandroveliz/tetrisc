@@ -38,6 +38,7 @@ int main()
 
     // PIEZAS
     Bloque b_prin = { 5, 2, NORMAL};
+    Bloque b_prin_sig = { 15, 5, NORMAL};
     Bloque bl1[3] = { { 0, -1, NORMAL } , { 1, -1, NORMAL } , { 0, 1, NORMAL } };
     Bloque bl2[3] = { { 0, -1, NORMAL } , { 1, 0, NORMAL } , { -1, 0, NORMAL } };
     Bloque bl3[3] = { { 0, -1, NORMAL } , { -1, -1, NORMAL } , { -1, 0, NORMAL } };
@@ -47,6 +48,7 @@ int main()
 
     //Generar piezas aleatoriamente
     Pieza pAc(b_prin,bl1,0);
+    srand(time(NULL));
     aleatorio = 1 + rand() % 6;
     if(aleatorio == 1) pAc.setBls(bl1), pAc.setColor(NARANJA);
     else if(aleatorio == 2) pAc.setBls(bl2), pAc.setColor(VERDE);
@@ -55,6 +57,14 @@ int main()
     else if(aleatorio == 5) pAc.setBls(bl5), pAc.setColor(ROJO);
     else if(aleatorio == 6) pAc.setBls(bl6), pAc.setColor(AZUL);
 
+    Pieza pSig(b_prin_sig, bl1, 0);
+    aleatorio = 1 + rand() % 6;
+    if(aleatorio ==  1) pSig.setBls(bl1), pSig.setColor(NARANJA);
+    else if(aleatorio == 2) pSig.setBls(bl2), pSig.setColor(VERDE);
+    else if(aleatorio == 3) pSig.setBls(bl3), pSig.setColor(AMARILLO);
+    else if(aleatorio == 4) pSig.setBls(bl4), pSig.setColor(MORADO);
+    else if(aleatorio == 5) pSig.setBls(bl5), pSig.setColor(ROJO);
+    else if(aleatorio == 6) pSig.setBls(bl6), pSig.setColor(AZUL);
 
     //Mostrar pieza
     //Pieza pAc(b_prin,bl1, VERDE);
@@ -111,14 +121,15 @@ int main()
                     fila--;
             }
             b_prin.x =5, b_prin.y = 2;
+            pAc = pSig;
             pAc.setBPrin(b_prin);
             aleatorio = 1 + rand() % 6;
-            if(aleatorio == 1) pAc.setBls(bl1), pAc.setColor(NARANJA);
-            else if(aleatorio == 2) pAc.setBls(bl2), pAc.setColor(VERDE);
-            else if(aleatorio == 3) pAc.setBls(bl3), pAc.setColor(AMARILLO);
-            else if(aleatorio == 4) pAc.setBls(bl4), pAc.setColor(MORADO);
-            else if(aleatorio == 5) pAc.setBls(bl5), pAc.setColor(ROJO);
-            else if(aleatorio == 6) pAc.setBls(bl6), pAc.setColor(AZUL);
+            if(aleatorio == 1) pSig.setBls(bl1), pSig.setColor(NARANJA);
+            else if(aleatorio == 2) pSig.setBls(bl2), pSig.setColor(VERDE);
+            else if(aleatorio == 3) pSig.setBls(bl3), pSig.setColor(AMARILLO);
+            else if(aleatorio == 4) pSig.setBls(bl4), pSig.setColor(MORADO);
+            else if(aleatorio == 5) pSig.setBls(bl5), pSig.setColor(ROJO);
+            else if(aleatorio == 6) pSig.setBls(bl6), pSig.setColor(AZUL);
             colb = false;
             rest(100);
         }
@@ -148,6 +159,7 @@ int main()
 
 
         pAc.mostrar_pieza(buffer,img_b);
+        pSig.mostrar_pieza(buffer,img_b);
         /*mostrar_bloques(buffer, img_b, 3, 3, VERDE, SMEDIO);*/
         blit(buffer,screen,0,0,0,0,ANCHO,ALTO);
 
