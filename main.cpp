@@ -23,7 +23,10 @@ int main()
     BITMAP *elimn = load_bitmap("Imagenes/elimina_piezas.bmp", NULL);
     BITMAP *img_texto = load_bitmap("Imagenes/textos.bmp", NULL);
     BITMAP *img_num = load_bitmap("Imagenes/numeros.bmp", NULL);
+    BITMAP *goBmp = load_bitmap("Imagenes/GameOver.bmp", NULL);
 
+
+    salto:
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
     int aux =0;
@@ -35,6 +38,7 @@ int main()
     bool colb = false;
     bool coli = false;
     bool cold = false;
+    bool gameOver = false;
 
     // PIEZAS
     Bloque b_prin = { 5, 2, NORMAL};
@@ -70,7 +74,7 @@ int main()
     //Pieza pAc(b_prin,bl1, VERDE);
 
     limpiar_mapa();
-    while (!key[KEY_ESC]){
+    while (!key[KEY_ESC] && gameOver == false){
         clear_to_color(buffer, 0x000000);
         mostrar_muros(buffer, muroH, muroV);
         mostrar_datos(buffer, img_texto, img_num, puntos, nivel);
@@ -119,6 +123,10 @@ int main()
                     eliminar_fila(fila);
                 else
                     fila--;
+            }
+            if (pAc.getY() <3){
+                gameOver = true;
+                break;
             }
             b_prin.x =5, b_prin.y = 2;
             pAc = pSig;
@@ -170,6 +178,16 @@ int main()
         rest(40);
     }
 
+    if(gameOver == true){
+        while(!key[KEY_ESC]){
+            blit(goBmp, buffer, 0, 0, 29, 175, 243, 108);
+            if(key[KEY_ENTER]){
+                goto salto;
+            }
+            blit(buffer, screen, 0, 0, 0, 0, ANCHO, ALTO);
+            rest(5);
+        }
+    }
 
     return 0;
 }
