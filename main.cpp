@@ -15,6 +15,14 @@ int main()
     set_color_depth(32);
     set_gfx_mode(GFX_AUTODETECT_WINDOWED,ANCHO,ALTO,0,0);
 
+    //Inicializacion de audio
+    if(install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT,NULL) != 0){
+        allegro_message("ERROR: inicializando sistema de sonido\n%s\n", allegro_error);
+        return 1;
+    }
+    set_volume(70, 70);
+
+
     // BITMAPS
     BITMAP *buffer = create_bitmap(ANCHO,ALTO);
     BITMAP *muroH = load_bitmap("Imagenes/muro_horizontal.bmp",NULL);
@@ -25,7 +33,9 @@ int main()
     BITMAP *img_num = load_bitmap("Imagenes/numeros.bmp", NULL);
     BITMAP *goBmp = load_bitmap("Imagenes/GameOver.bmp", NULL);
 
+    SAMPLE *sonido = load_sample("Sonidos/fondo1.wav");
 
+    play_sample(sonido,200,150,1000,1);
     salto:
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
@@ -189,6 +199,7 @@ int main()
         }
     }
 
+    destroy_sample(sonido);
     return 0;
 }
 END_OF_MAIN();
