@@ -32,10 +32,13 @@ int main()
     BITMAP *img_texto = load_bitmap("Imagenes/textos.bmp", NULL);
     BITMAP *img_num = load_bitmap("Imagenes/numeros.bmp", NULL);
     BITMAP *goBmp = load_bitmap("Imagenes/GameOver.bmp", NULL);
-
+    // SAMPLES
     SAMPLE *sonido = load_sample("Sonidos/fondo1.wav");
+    SAMPLE *col = load_sample("Sonidos/colocar_pieza.wav");
+    SAMPLE *eli = load_sample("Sonidos/elimina_fila.wav");
+    SAMPLE *rot = load_sample("Sonidos/rotar_pieza.wav");
 
-    play_sample(sonido,200,150,1000,1);
+    play_sample(sonido,150,150,1000,1);
     salto:
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
@@ -49,6 +52,7 @@ int main()
     bool coli = false;
     bool cold = false;
     bool gameOver = false;
+    bool reproducir = false;
 
     // PIEZAS
     Bloque b_prin = { 5, 2, NORMAL};
@@ -103,6 +107,7 @@ int main()
 
         // Cuando hace una colison abajo se genere otra pieza aleatoria
         if(colb){
+            play_sample(col, 200, 150, 1000, 0);
             pAc.insertar_mapa();
             fila = pAc.getY() + 2;
             while(fila > 19)
@@ -111,6 +116,7 @@ int main()
             cfila = fila;
             while(fila >= fin){ //while de la animacion
               if(pAc.fila_llena(fila)){
+                    play_sample(eli, 200, 150, 1000, 0);
                 for(int i=1; i<11; i++)
                     blit(elimn,buffer,0,0,i*SBLOCK, fila*SBLOCK, 25, 25);
                 blit(buffer,screen,0,0,0,0,ANCHO,ALTO);
@@ -158,15 +164,25 @@ int main()
             pAc.incrX(1);
         if(key[KEY_LEFT] && !coli)
             pAc.incrX(-1);
-        if(key[KEY_UP])
+        if(key[KEY_UP]){
+            reproducir = true;
             pAc.rotar();
             pAc.incrX(1);
-            if(pAc.colision_izquierda())
+            if(pAc.colision_izquierda()){
                 pAc = pAux;
+                reproducir = false;
+            }
             pAc.incrX(-2);
-            if(pAc.colision_derecha())
+            if(pAc.colision_derecha()){
                 pAc = pAux;
+                reproducir = false;
+            }
             pAc.incrX(1);
+            if(reproducir)
+            {
+                play_sample(rot, 200 , 150, 1000, 0 );
+            }
+        }
         if(key[KEY_DOWN])
             vcaida = 0;
 
@@ -200,6 +216,9 @@ int main()
     }
 
     destroy_sample(sonido);
+    destroy_sample(col);
+    destroy_sample(eli);
+    destroy_sample(rot);
     return 0;
 }
 END_OF_MAIN();
