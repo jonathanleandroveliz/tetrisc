@@ -1,9 +1,7 @@
 #include <iostream>
 #include <allegro.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
-#include "tetris_allegro.h"
+#include "Tetris_allegro.h"
 
 using namespace std;
 
@@ -32,13 +30,34 @@ int main()
     BITMAP *img_texto = load_bitmap("Imagenes/textos.bmp", NULL);
     BITMAP *img_num = load_bitmap("Imagenes/numeros.bmp", NULL);
     BITMAP *goBmp = load_bitmap("Imagenes/GameOver.bmp", NULL);
+    BITMAP *portada2 = load_bitmap("Imagenes/bmportada.bmp", NULL);
+    //JUGADORES
+    BITMAP *dibu = load_bitmap("Imagenes/original2.bmp", NULL);
+    BITMAP *ardiles = load_bitmap("Imagenes/ardiles1.bmp", NULL);
+    BITMAP *romero = load_bitmap("Imagenes/numero2.bmp", NULL);
+    BITMAP *tagliafico = load_bitmap("Imagenes/numero3.bmp", NULL);
+    BITMAP *montiel = load_bitmap("Imagenes/numero4.bmp", NULL);
+    BITMAP *tatabrown = load_bitmap("Imagenes/numero5.bmp", NULL);
+    BITMAP *maradona = load_bitmap("Imagenes/numero6.bmp", NULL);
+    BITMAP *depaul = load_bitmap("Imagenes/numero7.bmp", NULL);
+    BITMAP *huevo = load_bitmap("Imagenes/numero8.bmp", NULL);
+    BITMAP *arania = load_bitmap("Imagenes/numero9.bmp", NULL);
+    BITMAP *messi = load_bitmap("Imagenes/numero10.bmp", NULL);
+    BITMAP *dimaria = load_bitmap("Imagenes/numero11.bmp", NULL);
+
+    portada(portada2);
+    delete portada2;
+
     // SAMPLES
-    SAMPLE *sonido = load_sample("Sonidos/fondo1.wav");
     SAMPLE *col = load_sample("Sonidos/colocar_pieza.wav");
     SAMPLE *eli = load_sample("Sonidos/elimina_fila.wav");
     SAMPLE *rot = load_sample("Sonidos/rotar_pieza.wav");
 
-    play_sample(sonido,150,150,1000,1);
+
+    MIDI *musica_fondo = load_midi("Sonidos/fondo.mid");
+    play_midi(musica_fondo, 1);
+
+
     salto:
     //INTEGERS
     int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
@@ -51,8 +70,10 @@ int main()
     bool colb = false;
     bool coli = false;
     bool cold = false;
-    bool gameOver = false;
-    bool reproducir = false;
+    bool gameOver = false, reproducir;
+
+    //bool winner = false;
+
 
     // PIEZAS
     Bloque b_prin = { 5, 2, NORMAL};
@@ -89,11 +110,13 @@ int main()
 
     limpiar_mapa();
     while (!key[KEY_ESC] && gameOver == false){
+
         clear_to_color(buffer, 0x000000);
         mostrar_muros(buffer, muroH, muroV);
-        mostrar_datos(buffer, img_texto, img_num, puntos, nivel);
+        mostrar_datos(buffer, img_texto, img_num, puntos);
         mostrar_mapa(buffer,img_b);
-
+        mostrar_nivel(nivel,buffer,dibu,ardiles,romero,tagliafico,montiel,tatabrown,maradona,depaul,huevo,
+                      arania,messi,dimaria);
 
         if(pAc.colision_abajo()) colb = true;
         if(pAc.colision_derecha()) cold = true;
@@ -107,7 +130,7 @@ int main()
 
         // Cuando hace una colison abajo se genere otra pieza aleatoria
         if(colb){
-            play_sample(col, 200, 150, 1000, 0);
+            play_sample(col, 100, 150, 1000, 0);
             pAc.insertar_mapa();
             fila = pAc.getY() + 2;
             while(fila > 19)
@@ -116,7 +139,7 @@ int main()
             cfila = fila;
             while(fila >= fin){ //while de la animacion
               if(pAc.fila_llena(fila)){
-                    play_sample(eli, 200, 150, 1000, 0);
+                    play_sample(eli, 100, 150, 1000, 0);
                 for(int i=1; i<11; i++)
                     blit(elimn,buffer,0,0,i*SBLOCK, fila*SBLOCK, 25, 25);
                 blit(buffer,screen,0,0,0,0,ANCHO,ALTO);
@@ -127,7 +150,8 @@ int main()
                     rest(8);
                 }
                 puntos++;
-                if(puntos % 5 == 0){
+
+                if(puntos % 2 == 0){
                     nivel++;
                 }
               }
@@ -180,7 +204,7 @@ int main()
             pAc.incrX(1);
             if(reproducir)
             {
-                play_sample(rot, 200 , 150, 1000, 0 );
+                play_sample(rot, 100 , 150, 1000, 0 );
             }
         }
         if(key[KEY_DOWN])
@@ -189,6 +213,16 @@ int main()
         if(++aux >= 7){
             vcaida = 7;
             aux = 0;
+        }
+
+
+        if(key[KEY_F1])
+        {
+            nivel++;
+        }
+         if(key[KEY_F2])
+        {
+            nivel--;
         }
 
 
@@ -201,10 +235,11 @@ int main()
         cold = false;
         coli = false;
 
-        rest(40);
+        rest(50);
     }
 
-    if(gameOver == true){
+
+    if(gameOver){
         while(!key[KEY_ESC]){
             blit(goBmp, buffer, 0, 0, 29, 175, 243, 108);
             if(key[KEY_ENTER]){
@@ -215,10 +250,7 @@ int main()
         }
     }
 
-    destroy_sample(sonido);
-    destroy_sample(col);
-    destroy_sample(eli);
-    destroy_sample(rot);
+
     return 0;
 }
 END_OF_MAIN();

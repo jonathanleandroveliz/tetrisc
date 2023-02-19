@@ -1,4 +1,4 @@
-#include "tetris_allegro.h"
+#include "Tetris_allegro.h"
 #include <allegro.h>
 // Tamaños
 #define ANCHO 500
@@ -26,10 +26,10 @@ void mostrar_bloques(BITMAP *buffer, BITMAP *img_b, int xb, int yb,int color, in
 
 Pieza::Pieza(Bloque _b_prin, Bloque _bls[3], int _color_p){
     b_prin = _b_prin;
-    for(int i=0; i<3; i++){
-    bls[i] = _bls[i];
+    for(int i=0; i<3; i++)
+        bls[i] = _bls[i];
     color_p = _color_p;
-    };
+
 }
 
 void Pieza::mostrar_pieza(BITMAP* buffer, BITMAP* img_b){
@@ -155,7 +155,7 @@ void mostrar_numero(BITMAP* buffer, BITMAP* img_num, int numero, int xnum, int y
     while(numero != 0){
         uDigito = numero % 10;
         blit(img_num, buffer, uDigito*30, 0, xnum-pos, ynum, 30,60);
-        numero = numero /= 10;
+        numero /= 10;
         pos += 38;
         }
     }
@@ -164,17 +164,114 @@ void mostrar_numero(BITMAP* buffer, BITMAP* img_num, int numero, int xnum, int y
     }
 }
 
-void mostrar_datos(BITMAP* buffer, BITMAP* img_texto, BITMAP* img_num, int puntos, int nivel){
+void mostrar_datos(BITMAP* buffer, BITMAP* img_texto, BITMAP* img_num, int puntos){
     blit(img_texto, buffer, 0, 0, 320, 50, 146, 34);
     blit(img_texto, buffer, 0, 34, 320, 210, 119, 34);
     mostrar_numero(buffer, img_num, puntos, 430, 260);
     blit(img_texto, buffer, 0, 68, 320, 340, 82, 34);
-    mostrar_numero(buffer, img_num, nivel, 430, 390);
 
 }
+
+void mostrar_nivel(int nivel, BITMAP *buffer,BITMAP *dibu,BITMAP *ardiles,BITMAP *romero,BITMAP *tagliafico,
+                   BITMAP *montiel,BITMAP *tatabrown,BITMAP *maradona,BITMAP *depaul,BITMAP *huevo,BITMAP *arania,
+                   BITMAP *messi,BITMAP *dimaria){
+        if(nivel == 0){
+            blit(dibu, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+        } else if (nivel == 1)
+        {
+            blit(ardiles, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 2)
+        {
+            blit(romero, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 3)
+        {
+            blit(tagliafico, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 4)
+        {
+            blit(montiel, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 5)
+        {
+            blit(tatabrown, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 6)
+        {
+            blit(maradona, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 7)
+        {
+            blit(depaul, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 8)
+        {
+            blit(huevo, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 9)
+        {
+            blit(arania, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else if (nivel == 10)
+        {
+            blit(messi, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+        else
+        {
+            blit(dimaria, buffer , 0, 0, 330, 390, 120, 200 );
+            blit(buffer,screen, 0, 0, 0, 0, ANCHO , ALTO);
+
+        }
+    }
+
+
 
 void eliminar_fila(int fila){
     for(int i=fila; i>0; i--)
         for(int j=1; j<11; j++)
             mapa[i][j] = mapa[i-1][j];
 }
+
+void  portada(BITMAP *portada2){
+    int parpadeo = 0;
+    while(!key[KEY_ENTER])
+    {
+        if(parpadeo < 80)
+        {
+            blit(portada2, screen, 0, 0, 0, 0,ANCHO,ALTO);
+
+        }
+        else
+        {
+            blit(portada2, screen, 500, 0, 0, 0,ANCHO,ALTO);
+        }
+        rest(5);
+        if(++parpadeo == 150){
+            parpadeo = 0;
+        }
+    }
+    clear_to_color(screen,0x000000);
+}
+

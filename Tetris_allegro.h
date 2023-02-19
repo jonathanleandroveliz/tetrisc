@@ -51,10 +51,15 @@ public:
 
 void mostrar_muros(BITMAP *buffer, BITMAP *muroH, BITMAP *muroV);
 void mostrar_numero(BITMAP *buffer, BITMAP *img_num, int numero, int xnum, int ynum);
-void mostrar_datos(BITMAP *buffer, BITMAP *img_texto, BITMAP *img_num, int puntos, int nivel);
+void mostrar_datos(BITMAP *buffer, BITMAP *img_texto, BITMAP *img_num, int puntos);
+void mostrar_nivel(int nivel, BITMAP *buffer,BITMAP *dibu,BITMAP *ardiles,BITMAP *romero,BITMAP *tagliafico,
+                   BITMAP *montiel,BITMAP *tatabrown,BITMAP *maradona,BITMAP *depaul,BITMAP *huevo,BITMAP *arania,
+                   BITMAP *messi,BITMAP *dimaria);
 void limpiar_mapa();
 void mostrar_mapa(BITMAP *buffer, BITMAP *img_b);
 void eliminar_fila(int fila);
+void portada(BITMAP *portada2);
+
 
 
 #endif // TETRIS_ALLEGRO_H_INCLUDED
