@@ -44,6 +44,9 @@ int main()
     BITMAP *arania = load_bitmap("Imagenes/numero9.bmp", NULL);
     BITMAP *messi = load_bitmap("Imagenes/numero10.bmp", NULL);
     BITMAP *dimaria = load_bitmap("Imagenes/numero11.bmp", NULL);
+    //TERMINADO JUEGO
+    BITMAP *resultados = load_bitmap("Imagenes/resultado.bmp", NULL);
+    BITMAP *messi10 = load_bitmap("Imagenes/messi10.bmp", NULL);
 
     portada(portada2);
     delete portada2;
@@ -60,19 +63,16 @@ int main()
 
     salto:
     //INTEGERS
-    int vcaida = 7; // nos ayuda a controlas la velocidad de la caida
-    int aux =0;
-    int pb = 0;
     int aleatorio , fila , cfila, fin;
     int puntos = 0, nivel = 0;
+    int ticks = 0 , cont = 0;
 
     // Booleanos para detectar las colisiones
     bool colb = false;
     bool coli = false;
     bool cold = false;
     bool gameOver = false, reproducir;
-
-    //bool winner = false;
+    bool ganaste = false;
 
 
     // PIEZAS
@@ -105,11 +105,9 @@ int main()
     else if(aleatorio == 5) pSig.setBls(bl5), pSig.setColor(ROJO);
     else if(aleatorio == 6) pSig.setBls(bl6), pSig.setColor(AZUL);
 
-    //Mostrar pieza
-    //Pieza pAc(b_prin,bl1, VERDE);
 
     limpiar_mapa();
-    while (!key[KEY_ESC] && gameOver == false){
+    while (!key[KEY_ESC] && gameOver == false && ganaste == false){
 
         clear_to_color(buffer, 0x000000);
         mostrar_muros(buffer, muroH, muroV);
@@ -122,11 +120,14 @@ int main()
         if(pAc.colision_derecha()) cold = true;
         if(pAc.colision_izquierda()) coli = true;
 
-        // Bajar pieza
-        if(pb++ >= vcaida && !colb){
-            pb = 0;
+        if(ticks > velocidad_nivel(nivel))
+        {
+            ticks = 0;
             pAc.incrY(1);
         }
+
+        if(key[KEY_F1])
+            nivel++;
 
         // Cuando hace una colison abajo se genere otra pieza aleatoria
         if(colb){
@@ -149,23 +150,28 @@ int main()
                     blit(elimn, buffer, 50, 0, i*SBLOCK, fila*SBLOCK,25,25);
                     rest(8);
                 }
-                puntos++;
-
-                if(puntos % 2 == 0){
-                    nivel++;
-                }
               }
               fila--;
             }
             fila= cfila;
             while( fila >= fin){
-                if(pAc.fila_llena(fila))
+                if(pAc.fila_llena(fila)){
                     eliminar_fila(fila);
+                    cont++;
+                }
                 else
                     fila--;
             }
+            puntos = cont;
+            nivel = aumentar_nivel(puntos,nivel);
+
             if (pAc.getY() <3){
                 gameOver = true;
+                break;
+            }
+
+            if (puntos > 3){
+                ganaste = true;
                 break;
             }
             b_prin.x =5, b_prin.y = 2;
@@ -190,15 +196,18 @@ int main()
             pAc.incrX(-1);
         if(key[KEY_UP]){
             reproducir = true;
+            Pieza pAux = pAc;
             pAc.rotar();
             pAc.incrX(1);
             if(pAc.colision_izquierda()){
                 pAc = pAux;
+                pAc.incrX(2);
                 reproducir = false;
             }
             pAc.incrX(-2);
             if(pAc.colision_derecha()){
                 pAc = pAux;
+                pAc.incrX(-3);
                 reproducir = false;
             }
             pAc.incrX(1);
@@ -207,24 +216,10 @@ int main()
                 play_sample(rot, 100 , 150, 1000, 0 );
             }
         }
-        if(key[KEY_DOWN])
-            vcaida = 0;
 
-        if(++aux >= 7){
-            vcaida = 7;
-            aux = 0;
+        if(key[KEY_DOWN]){
+            pAc.incrY(1);
         }
-
-
-        if(key[KEY_F1])
-        {
-            nivel++;
-        }
-         if(key[KEY_F2])
-        {
-            nivel--;
-        }
-
 
         pAc.mostrar_pieza(buffer,img_b);
         pSig.mostrar_pieza(buffer,img_b);
@@ -235,7 +230,8 @@ int main()
         cold = false;
         coli = false;
 
-        rest(50);
+        rest(40);
+        ticks++;
     }
 
 
@@ -245,6 +241,17 @@ int main()
             if(key[KEY_ENTER]){
                 goto salto;
             }
+            blit(buffer, screen, 0, 0, 0, 0, ANCHO, ALTO);
+            rest(5);
+        }
+    }
+
+    if(ganaste){
+        while(!key[KEY_ESC]){
+            blit(messi10, buffer, 0, 0, 22, 0, ANCHO, ALTO);
+            blit(resultados, buffer, 0, 0, 299, 0, ANCHO, ALTO);
+            if(key[KEY_ENTER])
+                goto salto;
             blit(buffer, screen, 0, 0, 0, 0, ANCHO, ALTO);
             rest(5);
         }

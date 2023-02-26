@@ -35,6 +35,9 @@
 		<Unit filename="Tetris_allegro.cpp" />
 		<Unit filename="Tetris_allegro.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="recurso.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

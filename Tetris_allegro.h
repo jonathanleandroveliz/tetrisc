@@ -59,7 +59,8 @@ void limpiar_mapa();
 void mostrar_mapa(BITMAP *buffer, BITMAP *img_b);
 void eliminar_fila(int fila);
 void portada(BITMAP *portada2);
-
+int aumentar_nivel(int puntos, int nivel);
+int velocidad_nivel(int nivel);
 
 
 #endif // TETRIS_ALLEGRO_H_INCLUDED

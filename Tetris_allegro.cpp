@@ -18,6 +18,8 @@
 
 
 int mapa[13][22];
+int puntos_nivel[11] = {2,5,15,20,25,30,35,40,45,59,200};
+int velocidad_de_nivel[12] = {40,35,30,25,22,18,16,13,12,10,9,5};
 
 void mostrar_bloques(BITMAP *buffer, BITMAP *img_b, int xb, int yb,int color, int tipo){
     blit(img_b,buffer,tipo*SBLOCK, color*SBLOCK, xb*SBLOCK, yb*SBLOCK, SBLOCK,SBLOCK);
@@ -273,5 +275,16 @@ void  portada(BITMAP *portada2){
         }
     }
     clear_to_color(screen,0x000000);
+}
+
+int aumentar_nivel(int puntos, int nivel){
+    if(puntos > puntos_nivel[nivel])
+        nivel++;
+   return nivel;
+}
+
+int velocidad_nivel(int nivel)
+{
+    return velocidad_de_nivel[nivel];
 }
 
