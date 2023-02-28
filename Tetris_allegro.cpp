@@ -101,8 +101,9 @@ void Pieza::insertar_mapa(){
     }
 }
 
-void Pieza::rotar(){
+void Pieza::rotar(int rotacion){
     int aux;
+    if (rotacion % 2){
     for(int i=0; i<3; i++){
         aux = bls[i].x;
         bls[i].x = bls[i].y;
@@ -110,8 +111,17 @@ void Pieza::rotar(){
         bls[i].x *= -1;
 
     }
-}
+    }
+    else{
+        for(int i=0; i<3; i++){
+        aux = bls[i].x;
+        bls[i].x = bls[i].y;
+        bls[i].y = aux;
+        bls[i].y *= -1;
 
+    }
+}
+}
 bool Pieza::fila_llena(int fila){
     for (int i=1; i<11; i++){
         if(mapa[fila][i] == 9)
