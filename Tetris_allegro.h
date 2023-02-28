@@ -46,7 +46,7 @@ public:
         void setBPrin(Bloque newB_prin){ b_prin = newB_prin; }
         void setBls(Bloque newBls[3]){ for(int i=0; i<3; i++) bls[i] = newBls[i]; }
         void setColor(int newColor){ color_p = newColor ; }
-        void rotar(int rotacion);
+        void rotar();
 };
 
 void mostrar_muros(BITMAP *buffer, BITMAP *muroH, BITMAP *muroV);

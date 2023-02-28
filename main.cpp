@@ -66,7 +66,7 @@ int main()
     int aleatorio , fila , cfila, fin;
     int puntos = 0, nivel = 0;
     int ticks = 0 , cont = 0;
-    int rotacion = 0;
+
 
     // Booleanos para detectar las colisiones
     bool colb = false;
@@ -198,8 +198,9 @@ int main()
         if(key[KEY_UP]){
             reproducir = true;
             Pieza pAux = pAc;
-            rotacion++;
-            pAc.rotar(rotacion);
+            pAc.rotar();
+            pAc.rotar();
+            pAc.rotar();
             pAc.incrX(1);
             if(pAc.colision_izquierda()){
                 pAc = pAux;
